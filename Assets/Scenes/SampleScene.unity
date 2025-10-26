@@ -311,7 +311,7 @@ GameObject:
   - component: {fileID: 185932410}
   - component: {fileID: 185932409}
   - component: {fileID: 185932408}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform (4)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -415,6 +415,8 @@ GameObject:
   - component: {fileID: 495387874}
   - component: {fileID: 495387875}
   - component: {fileID: 495387876}
+  - component: {fileID: 495387877}
+  - component: {fileID: 495387878}
   m_Layer: 0
   m_Name: ScriptKeeper
   m_TagString: Untagged
@@ -476,7 +478,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235146c48d6b98d4ab435bf1f99181ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _delay: 2
+--- !u!114 &495387877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495387872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9a5610b9f2e694b848ed3437860dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _prefab: {fileID: 3453802215990100872, guid: 9d2ff3a662afbfc4faa1bded9626f5d0, type: 3}
+--- !u!114 &495387878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495387872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c278400b2b0eb4f878645f19c23c50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &627761460
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +516,7 @@ GameObject:
   - component: {fileID: 627761463}
   - component: {fileID: 627761462}
   - component: {fileID: 627761461}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -594,7 +621,7 @@ GameObject:
   - component: {fileID: 628020197}
   - component: {fileID: 628020196}
   - component: {fileID: 628020195}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform (2)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -793,7 +820,7 @@ GameObject:
   - component: {fileID: 773823430}
   - component: {fileID: 773823429}
   - component: {fileID: 773823428}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform (5)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1095,7 +1122,7 @@ GameObject:
   - component: {fileID: 1070296909}
   - component: {fileID: 1070296908}
   - component: {fileID: 1070296907}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform (3)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1409,7 +1436,7 @@ GameObject:
   - component: {fileID: 1854134516}
   - component: {fileID: 1854134515}
   - component: {fileID: 1854134514}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1503,7 +1530,7 @@ GameObject:
   - component: {fileID: 1866500589}
   - component: {fileID: 1866500588}
   - component: {fileID: 1866500587}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform (1)
   m_TagString: Ground
   m_Icon: {fileID: 0}

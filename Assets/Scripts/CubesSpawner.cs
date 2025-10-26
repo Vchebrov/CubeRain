@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    [SerializeField] private GameObject _prefab; 
+    [SerializeField] private GameObject _prefab;
 
     private ObjectPool<GameObject> _pool;
 
@@ -17,7 +17,7 @@ public class NewBehaviourScript : MonoBehaviour
     private float _horizontalMax = 9f;
     private float _verticalMin = 10f;
     private float _horizontalMin = 1f;
-    
+
     private float _hueMin = 0f;
     private float _hueMax = 1f;
     private float _saturationMin = 0.6f;
@@ -67,8 +67,11 @@ public class NewBehaviourScript : MonoBehaviour
 
     private IEnumerator ResetCube(GameObject obj)
     {
-        yield return new WaitForSeconds(_delay);
-        _pool.Release(obj);
+        while (true)
+        {
+            yield return new WaitForSeconds(_delay);
+            _pool.Release(obj);
+        }
     }
 
     private Vector3 InitiateCubePosition()
@@ -88,7 +91,7 @@ public class NewBehaviourScript : MonoBehaviour
                 _hueMin, _hueMax,
                 _saturationMin, _saturationMax,
                 _valueMin, _valueMax
-            );                
+            );
         }
         else
         {
