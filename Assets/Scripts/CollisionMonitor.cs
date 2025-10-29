@@ -1,16 +1,23 @@
+using System;
 using UnityEngine;
 
+[RequireComponent(typeof(ColorChanger))]
 public class CollisionMonitor : MonoBehaviour
 {
+    private string _layerName = "TouchNGo";
+
+    private int _targetLayer;
+    
     private ColorChanger _colorChanger;
-    private Spawner _spawner;
 
     private bool _isTouched = false;
+    
+    public event Action<Transform> OnTouched;
 
     private void Awake()
     {
-        _colorChanger = FindObjectOfType<ColorChanger>();
-        _spawner = FindObjectOfType<Spawner>();
+        _colorChanger = new  ColorChanger();
+        _targetLayer = LayerMask.NameToLayer(_layerName);
     }
 
     public void ResetState()
@@ -21,11 +28,11 @@ public class CollisionMonitor : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log($"OnCollisionEnter. {collision.gameObject.name} met");
-        if (collision.gameObject.layer == LayerMask.NameToLayer("TouchNGo") && !_isTouched)
+        if (collision.gameObject.layer == _targetLayer && !_isTouched)
         {
             Debug.Log("Check passed for collision");
             _colorChanger.ChangeColor(this.gameObject);
-            StartCoroutine(_spawner.RemoveCube(this.gameObject));
+            OnTouched?.Invoke(gameObject.transform);
             _isTouched = true;
         }
     }

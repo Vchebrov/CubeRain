@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(CubeKeeper), typeof(ColorChanger))]
+[RequireComponent(typeof(CollisionMonitor))]
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private float _delay = 1f;
+  
+    [SerializeField] private GameObject _prefab;
 
-    private CubeKeeper _cubeKeeper;
     private ObjectPool<GameObject> _pool;
 
     private float _verticalMax = 10f;
@@ -17,31 +18,16 @@ public class Spawner : MonoBehaviour
     private float _verticalMin = 3f;
     private float _horizontalMin = 1f;
 
-    private void Awake()
-    {
-        _cubeKeeper = GetComponent<CubeKeeper>();
-    }
-
     private void Start()
     {
         StartCoroutine(CreateCube());
     }
 
-    private void OnEnable()
+    private void Awake()
     {
-        _cubeKeeper.CubeInfo += OnRecievePrefab;
-    }
-
-    private void OnDisable()
-    {
-        _cubeKeeper.CubeInfo -= OnRecievePrefab;
-    }
-
-    private void OnRecievePrefab(GameObject prefab)
-    {
-        Debug.Log($"OnRecievePrefab: {prefab.name}");
+        Debug.Log($"OnRecievePrefab: {_prefab.name}");
         _pool = new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(prefab),
+            createFunc: () => Instantiate(_prefab),
             actionOnGet: (obj) => ActionOnGet(obj),
             actionOnRelease: (obj) => obj.SetActive(false),
             actionOnDestroy: (obj) => Destroy(obj),
@@ -53,26 +39,55 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator CreateCube()
     {
-        while (true)
+        while (_pool == null)
+            yield return null;
+
+        while (enabled)
         {
-            yield return new WaitForSeconds(_delay);
             _pool.Get();
+            yield return new WaitForSeconds(_delay);
         }
     }
 
-    public IEnumerator RemoveCube(GameObject obj)
+    public IEnumerator RemoveCube(Transform objTransform)
     {
+        Debug.Log($"OnRemoveCube Coroutine: {objTransform.name}");
+        var obj = objTransform.gameObject;
         yield return new WaitForSeconds(_delay);
         _pool.Release(obj);
+    }
+
+    private void OnRemoveCube(Transform objTransform)
+    {
+        Debug.Log($"OnRemoveCube: {objTransform.name}");
+        StartCoroutine(RemoveCube(objTransform));
     }
 
     private void ActionOnGet(GameObject obj)
     {
         obj.transform.position = InitiateCubePosition();
-        obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        obj.GetComponent<CollisionMonitor>().ResetState();
+        obj.transform.position = InitiateCubePosition();
+
+        if (obj.TryGetComponent(out Rigidbody rb))
+        {
+            rb.velocity = Vector3.zero;
+            rb.Sleep();
+        }
+
+        if (obj.TryGetComponent(out CollisionMonitor collisionMonitor))
+        {
+            collisionMonitor.ResetState();
+            collisionMonitor.OnTouched -= OnRemoveCube;
+            collisionMonitor.OnTouched += OnRemoveCube;
+        }
+
         obj.SetActive(true);
-        obj.GetComponent<Renderer>().material.color = Color.white;
+
+        if (obj.TryGetComponent(out Renderer rend))
+        {
+            var objMaterial = rend.material;
+            objMaterial.color = Color.white;
+        }
     }
 
     private Vector3 InitiateCubePosition()
